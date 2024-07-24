@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% load static %}
+{% block extra_css %}
+<style>
+.main-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.container {
+    max-width: 600px;
+    width: 100%;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.signup-heading {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.user-content-container {
+    width: 100%;
+}
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+li {
+    margin-bottom: 15px;
+}
+label {
+    font-weight: bold;
+    display: block;
+}
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: border-color 0.3s ease;
+}
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus {
+    border-color: #007bff;
+}
+.signup-button {
+    background-color: #0C5FCD;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.signup-button:hover {
+    background-color: #1775F1;
+}
+</style>
+{% endblock %}
+{% block content %}
+
+
+
+<main class="main-container">
+    <div class="container">
+        <h2 class="signup-heading">Sign Up</h1>
+        <div class="user-content-container user-profile-form-container">
+            <form action="" method="POST">
+                {% csrf_token %}
+                <ul>
+                    <li class="name">
+                        <label for="id_username">Username</label>
+                        {{ form.username.errors }}
+                        {{ form.username }}
+                    </li>
+                    <li class="email">
+                        <label for="id_email">Email</label>
+                        {{ form.email.errors }}
+                        {{ form.email }}
+                    </li>
+                    <li class="pass">
+                        <label for="id_password1">Password</label>
+                        {{ form.password1.errors }}
+                        {{ form.password1 }}
+                    </li>
+                    <li class="confirm-pass">
+                        <label for="id_password2">Confirm Password</label>
+                        {{ form.password2.errors }}
+                        {{ form.password2 }}
+                    </li>
+                </ul>
+                <button class="signup-button" type="submit">Sign up</button>
+                
+            </form>
+        </div>
+    </div>
+</main>
+
+{% endblock %}

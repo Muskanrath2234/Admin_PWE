@@ -8,7 +8,13 @@
 	<link rel="stylesheet" href="{% static 'css/base.css' %}">
 	<title>{% block title %}AdminSite{% endblock %}</title>
     {% block extra_css %}
-    {% endblock%}
+	<style>
+		#icon {
+			width: 30px;
+			cursor: pointer;
+		}
+	</style>
+    {% endblock %}
 </head>
 <body>
 	
@@ -31,14 +37,12 @@
 				<ul class="side-dropdown">
 					<li><a href="{% url 'create_post' %}">Posts</a></li>
 					<li><a href="{% url 'post' %}">Posts</a></li>
-					<li><a href="#">Chat</a></li>
+					<li><a href="{% url 'index' %}">Chat</a></li>
                     <li><a href="#"> Inbox</a></li>
                     <li><a href="#">Send Reminder </a></li>
 				</ul>
 			</li>
            
-           
-			
 			<li class="divider" data-text="Room And Support">Room And Support</li>
 			<li><a href="{% url 'room_list' %}"><i class='bx bxs-bed icon'></i> Room</a></li>
            
@@ -47,6 +51,7 @@
 				<ul class="side-dropdown">
 					<li><a href="#">View Tickets</a></li>
 					<li><a href="#">Leave Requests</a></li>
+					<li><a href="{% url 'budget' %}">Budget</a></li>
 				
 				</ul>
 			</li>
@@ -79,6 +84,8 @@
 				<i class='bx bxs-message-square-dots icon' ></i>
 				<span class="badge">8</span>
 			</a>
+			<img src="{% static 'img/moon.png' %}" id="icon" style="width: 30px; cursor: pointer;">
+
 			<span class="divider"></span>
 			<div class="profile">
 				<img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8cGVvcGxlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="">
@@ -103,5 +110,8 @@
 
 	<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 	<script src="{% static 'js/base.js' %}"></script>
+	{% block extra_js %}
+   
+{% endblock %}
 </body>
 </html>

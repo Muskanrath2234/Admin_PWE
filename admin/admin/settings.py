@@ -25,17 +25,19 @@ SECRET_KEY = 'django-insecure-$#ry#tfw6&$z51zw_a!&_un7__+m!gka&e$c7lz8!@z_48=#z=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'channels',
     'Admin_Management',
- 
+    'chat',
     'Room_Management',
     'Chat_System',
     'Ticket_Management',
@@ -69,7 +71,19 @@ TEMPLATES = [
     },
 ]
 
+
 WSGI_APPLICATION = 'admin.wsgi.application'
+
+ASGI_APPLICATION = 'admin.asgi.application'
+# LEARN CHANNELS
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
+}
 
 
 # Database
@@ -117,7 +131,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-# Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
@@ -125,5 +138,18 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+SESSION_COOKIE_DOMAIN = None
+CSRF_COOKIE_SECURE = False
+CSRF_TRUSTED_ORIGINS = ['https://*.ngrok-free.app']
+# Email settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # For Gmail
+EMAIL_PORT = 587  # For TLS
+EMAIL_USE_TLS = True  # Use TLS
+EMAIL_USE_SSL = False  # Don't use SSL
+EMAIL_HOST_USER = 'rathoremuskan597@gmail.com'  # Your email address
+EMAIL_HOST_PASSWORD = 'khazqxbmggwdlxic'  # Your email password

@@ -25,5 +25,6 @@ urlpatterns = [
     path('chat/', include('chat.urls')),
      path('room/', include('Room_Management.urls')),
      path('communication/', include('Chat_System.urls')),
-    # path('ticket/', include('Ticket_Management.urls')),
+    path('ticket/', include('Ticket_Management.urls')),
+    path('emails/',include('emails.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

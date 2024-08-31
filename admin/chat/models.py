@@ -26,11 +26,3 @@ class Message(models.Model):
         local_time = timezone.localtime(self.created_date)
         return local_time.strftime("%H:%M")
 
-# CapturedImage Model
-class CapturedImage(models.Model):
-    # Captured image ko user ke saath link kar rahe hain
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    # Image field jo uploaded image ko store karega
-    image = models.ImageField(upload_to='captured_images/')
-    # Timestamp for when the image was created
-    created_at = models.DateTimeField(auto_now_add=True)

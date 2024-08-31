@@ -4,9 +4,51 @@
 {% block title %}Home{% endblock %}
 {% block extra_css %}
 <style>
+    .card-box {
+        background: var(--primary-color);
+        border: 1px solid #ddd;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 30px;
+    }
+    
+    .card-box .row {
+        display: flex;
+        align-items: center;
+    }
+    
+    .card-box img {
+        max-width: 100%;
+        border-radius: 10px;
+    }
+    
+    .card-box h4 {
+        color: var(--secondary-color);
+        font-size: 20px;
+        font-weight: 500;
+        margin-bottom: 10px;
+        text-transform: capitalize;
+    }
+    
+  
+    .card-box h4 .user{
+        color: var(--blue);
+        font-size:25px;
+        
+        font-weight:600px;
+    }
+    
+    .card-box p {
+        color: var(--secondary-color);
+        font-size: 18px;
+        max-width: 600px;
+      
+    }
+    
 
-/* Base styling for the main content */
 main {
+    
     padding: 20px;
     font-family: 'Playfair Display', serif;
 }
@@ -16,15 +58,7 @@ main {
     margin-bottom: 30px;
 }
 
-.welcome h1 {
-    font-size: 2em;
-    color: #333;
-}
 
-.welcome p {
-    font-size: 1.2em;
-    color: #666;
-}
 
 /* Styling for the stats section */
 .stats {
@@ -35,7 +69,9 @@ main {
 }
 
 .card {
-    background-color: #f9f9f9;
+    margin-top:20px;
+    margin:10px;
+    background-color: var(--primary-color);
     border: 1px solid #ddd;
     border-radius: 8px;
     padding: 20px;
@@ -48,17 +84,17 @@ main {
 .card h2 {
     font-size: 1.5em;
     margin-bottom: 10px;
-    color: #333;
+    color:var(--secondary-color);
 }
 
 .card p {
     font-size: 1em;
-    color: #777;
+    color:var(--secondary-color);
 }
 
 /* Hover effect for cards */
 .card:hover {
-    background-color: #f1f1f1;
+   
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
     transform: translateY(-5px);
 }
@@ -66,11 +102,20 @@ main {
 {% endblock%}
 {% block content %}
 <main>
-    <section class="welcome">
-        <h1>Welcome to the Admin Dashboard</h1>
-        <p>Manage your application efficiently and effectively.</p>
-    </section>
-
+    <div class="card-box">
+        <div class="row">
+            <div class="col-md-4">
+                <img src="{% static 'img/banner-img.png' %}" alt="">
+            </div>
+            <div class="col-md-8">
+                <h4 class="font-20 weight-500 mb-10 text-capitalize">
+                    Welcome back <div class="user">Johnny Brown!</div>
+                </h4>
+                <p class="font-18 max-width-600">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Unde hic non repellendus debitis iure, doloremque assumenda. Autem modi, corrupti, nobis ea iure fugiat, veniam non quaerat mollitia animi error corporis.</p>
+            </div>
+        </div>
+    </div>
+    
     <section class="stats">
         <div class="card">
             <h2>Users</h2>

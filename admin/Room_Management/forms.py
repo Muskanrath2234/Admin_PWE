@@ -10,3 +10,11 @@ class RoomForm(forms.ModelForm):
 
 
 
+# forms.py
+from django import forms
+from .models import Facility
+
+class FacilityForm(forms.ModelForm):
+    class Meta:
+        model = Facility
+        fields = ['facility_type', 'facility_name', 'facility_image']

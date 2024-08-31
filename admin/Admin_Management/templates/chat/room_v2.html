@@ -1,54 +1,58 @@
 <!DOCTYPE html>
-
 {% load static %}
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <!--  This file has been downloaded from bootdey.com    @bootdey on twitter -->
-    <!--  All snippets are MIT license http://bootdey.com/license -->
-    <title>Whatsapp web chat template - pwe.com</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}"> 
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Chat Application</title>
 
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/room.css' %}">
 </head>
 <body>
-  
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<div class="container app">
-  <div class="row app-one">
-    <div class="col-sm-4 side">
-      <div class="side-one">
-        <div class="row heading">
-          <div class="col-sm-3 col-xs-3 heading-avatar">
-           
-            <div class="heading-avatar-icon">
-              <img src="{% static 'img/girlimg.jpg' %}">
-            </div>
 
-            
-         
-            
-          </div>
-          <div class="col-sm-1 col-xs-1  heading-dot  pull-right">
-            <i class="fa fa-ellipsis-v fa-2x  pull-right" aria-hidden="true"></i>
-          </div>
-          <div class="col-sm-2 col-xs-2 heading-compose  pull-right">
-            <i class="fa fa-comments fa-2x  pull-right" aria-hidden="true"></i>
-          </div>
-          <div class="heading-avatar-name">
-            <span>{{ request.user.username }}</span> <!-- Display the logged-in user's username -->
-        </div> 
-        </div>
+  <div class="container app">
+    <div class="row app-one">
+        <!-- Sidebar -->
+        <div class="col-sm-4 side">
+            <!-- Sidebar Header -->
+            <div class="side-one">
+                <div class="row heading">
+                    <div class="col-sm-3 col-xs-3 heading-avatar">
+                        <div class="heading-avatar-icon">
+                            <img src="{% static 'img/girlimg.jpg' %}" alt="Avatar">
+                        </div>
+                    </div>
+                    <div class="col-sm-1 col-xs-1 heading-dot pull-right">
+                        <i class="fa fa-ellipsis-v fa-2x pull-right" aria-hidden="true"></i>
+                    </div>
+                    <div class="col-sm-2 col-xs-2 heading-compose pull-right">
+                        <i class="fa fa-comments fa-2x pull-right" aria-hidden="true"></i>
+                    </div>
+                </div>
+
 
         <div class="row searchBox">
           <div class="col-sm-12 searchBox-inner">
-            <div class="form-group has-feedback">
-              <input id="searchText" type="text" class="form-control" name="searchText" placeholder="Search">
-              <span class="glyphicon glyphicon-search form-control-feedback"></span>
-            </div>
+              <div class="form-group has-feedback">
+                  <input id="searchText" type="text" class="form-control" name="searchText" placeholder="Search">
+                  <span class="glyphicon glyphicon-search form-control-feedback"></span>
+              </div>
           </div>
-        </div>
+      </div>
+      
+      <!-- Placeholder for the "No user found" message -->
+      <div id="noUserFound" style="display:none;">No user found</div>
+      
 
         <div class="row sideBar">
           {% for user  in users%}
@@ -142,13 +146,6 @@
             </div>
           </div>
          
-          
-       
-        
-         
-          
-          
-         
         </div>
       </div>
     </div>
@@ -173,88 +170,85 @@
           <span class="heading-online">Online</span>
         </div>
         <div class="col-sm-1 col-xs-1 heading-dot pull-right">
-          <i class="fa fa-ellipsis-v fa-2x pull-right" aria-hidden="true" onclick="toggleDropdown()"></i>
-          <div id="dropdownMenu" class="dropdown-content">
-              <a href="#">Contact Info</a>
-              <a href="#">Delete Chat</a>
-              <a href="#">Report</a>
-              <a href="#">Block</a>
-              <a href="#">Mute Notifications</a>
+          <div class="dropdown">
+              <i class="fa fa-ellipsis-v fa-2x pull-right dropdown-toggle" aria-hidden="true" id="optionsMenu" data-toggle="dropdown"></i>
+              <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="optionsMenu">
+                <li><a href="{% url 'second_user_profile_view' room.id %}">Contact Info</a></li>
+
+                <li><a href="{% url 'index' %}">Close Chat</a></li>
+
+                <li><a href="{% url 'delete_chat' room.id  %}" id="delete-chat" data-room-id="{{ room.id }}">Delete Chat</a></li>
+
+                  <li><a href="#">Report</a></li>
+                  <li><a href="#">Block</a></li>
+              </ul>
           </div>
       </div>
       
       </div>
 
       <div class="row message" id="conversation">
-        
-
         {% for message in messages %}
         <div class="row message-body">
-          {% if message.user == request.user %}
+            {% if message.user == request.user %}
             <div class="col-sm-12 message-main-sender">
-              <div class="sender">
-                <div class="message-text">
-                  {% if message.what_is_it == "text" %}
-                      {{ message.content }}
-                      
-                  {% elif message.what_is_it == "image" %}
-                      <img src="{{ message.content }}" width="200" height="200" alt="Image">
-                  {% elif message.what_is_it == "audio" %}
-                      <audio controls>
-                          <source src="{{ message.content }}" type="audio/mpeg">
-                          Your browser does not support the audio element.
-                      </audio>
-                  {% elif message.what_is_it == "video" %}
-                      <video width="320" height="240" controls>
-                          <source src="{{ message.content }}" type="video/mp4">
-                          Your browser does not support the video tag.
-                      </video>
-                  {% else %}
-                      <p>Unsupported message type</p>
-                  {% endif %}
-              </div>
-                 
-                 
+                <div class="sender">
+                    <div class="message-text">
+                        {% if message.what_is_it == "text" %}
+                        {{ message.content }}
+                        {% elif message.what_is_it == "image" %}
+                        <img src="{{ message.content }}" width="200" height="200" alt="Image">
+                        {% elif message.what_is_it == "audio" %}
+                        <audio controls>
+                            <source src="{{ message.content }}" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                        {% elif message.what_is_it == "video" %}
+                        <video width="320" height="240" controls>
+                            <source src="{{ message.content }}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        {% else %}
+                        <p>Unsupported message type</p>
+                        {% endif %}
+                    </div>
+                    <span class="message-time pull-right">
+                        {{ message.get_short_date }}
+                    </span>
                 </div>
-                <span class="message-time pull-right">
-                  {{ message.get_short_date }}
-                </span>
-              </div>
             </div>
-          {% else %}
+            {% else %}
             <div class="col-sm-12 message-main-receiver">
-              <div class="receiver">
-                <div class="message-text">
-                  {% if message.what_is_it == "text" %}
-                  {{ message.content }}
-                  
-              {% elif message.what_is_it == "image" %}
-                  <img src="{{ message.content }}" width="200" height="200" alt="Image">
-              {% elif message.what_is_it == "audio" %}
-                  <audio controls>
-                      <source src="{{ message.content }}" type="audio/mpeg">
-                      Your browser does not support the audio element.
-                  </audio>
-              {% elif message.what_is_it == "video" %}
-                  <video width="320" height="240" controls>
-                      <source src="{{ message.content }}" type="video/mp4">
-                      Your browser does not support the video tag.
-                  </video>
-              {% else %}
-                  <p>Unsupported message type</p>
-              {% endif %} 
-                  </div>
-                <span class="message-time pull-right">
-                  {{ message.get_short_date }}
-                </span>
-              </div>
+                <div class="receiver">
+                    <div class="message-text">
+                        {% if message.what_is_it == "text" %}
+                        {{ message.content }}
+                        {% elif message.what_is_it == "image" %}
+                        <img src="{{ message.content }}" width="200" height="200" alt="Image">
+                        {% elif message.what_is_it == "audio" %}
+                        <audio controls>
+                            <source src="{{ message.content }}" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                        {% elif message.what_is_it == "video" %}
+                        <video width="320" height="240" controls>
+                            <source src="{{ message.content }}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        {% else %}
+                        <p>Unsupported message type</p>
+                        {% endif %}
+                    </div>
+                    <span class="message-time pull-right">
+                        {{ message.get_short_date }}
+                    </span>
+                </div>
             </div>
-          {% endif %}
+            {% endif %}
         </div>
-      {% endfor %}
-
-
-      </div> 
+        {% endfor %}
+    </div>
+    
       
 
 
@@ -282,6 +276,8 @@
   </div>
 </div>
 
+  
+
 {{ room_name|json_script:"room-name" }}
 {{ request.user.username| json_script:"user"}}
 
@@ -289,5 +285,6 @@
 <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
  <script src="{% static 'Js/script.js' %}"></script> 
 
-</body>
 </html>
+</body>
+

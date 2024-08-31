@@ -42,7 +42,8 @@ def verifyOPT(request):
 
     return JsonResponse({'error': 'Invalid request method'}, status=405)
 
-
+def setting(request):
+    return render(request,'settings.html')
 
 def home(request):
     return render(request,'home.html') 
@@ -153,3 +154,41 @@ def editprofile(request):
 def user_logout(request):
     logout(request)
     return redirect('admin_login')
+
+
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.models import User
+from django.contrib import messages
+from django.shortcuts import render, redirect
+
+@login_required
+def change_password(request):
+    if request.method == 'POST':
+        current_password = request.POST['current_password']
+        new_password = request.POST['new_password']
+        confirm_password = request.POST['confirm_password']
+
+        if not request.user.check_password(current_password):
+            messages.error(request, 'The current password is incorrect.')
+            return redirect('change_password')
+
+        if new_password != confirm_password:
+            messages.error(request, 'The new passwords do not match.')
+            return redirect('change_password')
+
+        if len(new_password) < 8:
+            messages.error(request, 'The new password must be at least 8 characters long.')
+            return redirect('change_password')
+
+        # Update the password
+        request.user.set_password(new_password)
+        request.user.save()
+
+        # Keep the user logged in after password change
+        update_session_auth_hash(request, request.user)
+
+        messages.success(request, 'Your password has been successfully updated.')
+        return redirect('change_password')
+
+    return render(request, 'change_password.html')

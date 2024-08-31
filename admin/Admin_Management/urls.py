@@ -10,5 +10,6 @@ urlpatterns = [
     path('editprofile/', editprofile, name='editprofile'),
     path('user_logout/', user_logout, name='user_logout'),
      path('verifyEmail', verifyOPT, name='verifyEmail'),
-     path('budget/',budget,name='budget')
+     path('budget/',budget,name='budget'),
+     path('settings/',setting,name='settings'),
 ]

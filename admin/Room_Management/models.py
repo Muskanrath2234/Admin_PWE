@@ -17,6 +17,24 @@ class Room(models.Model):
     def __str__(self):
         return self.room_number
 
+# models.py
+from django.db import models
 
+class Facility(models.Model):
+    FACILITY_TYPES = [
+        ('gym', 'Gym'),
+        ('pool', 'Swimming Pool'),
+        ('wifi', 'WiFi'),
+        ('laundry', 'Laundry'),
+        ('parking', 'Parking'),
+        ('other', 'Other'),
+    ]
+
+    facility_type = models.CharField(max_length=20, choices=FACILITY_TYPES,blank=True, null=True)
+    facility_name = models.CharField(max_length=100,blank=True, null=True)
+    facility_image = models.ImageField(upload_to='facility_images/', blank=True, null=True)
+
+    def __str__(self):
+        return self.facility_name
 
 

@@ -27,53 +27,67 @@
     }
 
     .mt-custom {
-        margin-top: 100px; /* Adjust this value as needed */
+        margin-top: 50px; /* Adjust this value as needed */
     }
 
-    .card-container {
-        background-color: #ffffff; /* White background for the card container */
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        padding: 20px;
+    .room-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
         margin-bottom: 20px;
+        background-color: #ffffff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
-    .card-body {
-        padding: 20px;
+    .room-table th, .room-table td {
+        padding: 15px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
     }
 
-    {% comment %} .services {
-        background-color: #f8f9fa; /* Light background color for section */
-    } {% endcomment %}
+    .room-table th {
+        background-color: var(--blue); /* Ensure you have defined this variable or replace it with a color value */
+        color: white;
+        font-weight: bold;
+    }
 
-    .text-primary {
-        color: var(--blue); /* Ensure you have defined this variable or replace it with a color value */
+    .room-table tr:hover {
+        background-color: #f1f1f1;
     }
 
     .btn-update {
         background-color: var(--blue); /* Define this variable or use a color value */
         color: white;
+        padding: 8px 16px;
+        border-radius: 4px;
+        border: none;
+        cursor: pointer;
     }
 
     .btn-delete {
-        margin-top:10px;
-        border:none;
         background-color: red;
         color: white;
+        padding: 8px 16px;
+        border-radius: 4px;
+        border: none;
+        cursor: pointer;
     }
 
-    .btn-small {
-        font-size: 18px; /* Smaller font size */
-        padding: 5px 10px; /* Smaller padding */
+    .text-center {
+        text-align: center;
     }
-    .addroom{
-        margin-left:20px;
+
+    .no-rooms-found {
+        margin-top: 20px;
+        color: #666;
+        font-size: 18px;
+        text-align: center;
     }
 </style>
 
 <div class="add">
     {% if user.is_superuser %}
-    <div class="text-center pb-3">
+    <div class="text-center">
         <a href="{% url 'add_room' %}" class="btn-custom mt-custom"><span class='addroom'>Add Room</span></a>
     </div>
     {% endif %}
@@ -81,49 +95,45 @@
 
 <section class="services py-5 bg-light">
     <div class="container">
-        <div class="row">
-            {% for room in rooms %}
-            <div class="col-sm-12 col-md-4 col-lg-4 col-12">
-                <div class="card-container"> <!-- White background container -->
-                    <div id="carousel{{ room.room_number }}" class="carousel slide" data-bs-ride="carousel">
-                        <div class="carousel-inner">
-                            <div class="carousel-item active">
-                                <img src="{% static 'image/images/room1.jpg' %}" class="d-block w-100" alt="Room Image">
-                            </div>
-                            <!-- Add more carousel items here if needed -->
-                        </div>
-                        <!-- Uncomment these if you have more images and want carousel controls -->
-                        <!-- <button class="carousel-control-prev" type="button" data-bs-target="#carousel{{ room.room_number }}" data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Previous</span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#carousel{{ room.room_number }}" data-bs-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Next</span>
-                        </button> -->
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">Room Number: {{ room.room_number }}</h5>
-                        <p class="card-text">Available Seats: {{ room.available_seat }}</p>
-                        <p class="card-text">Type: {{ room.get_type_display }}</p>
-                        <p class="card-text">Available Date: {{ room.available_date }}</p>
-                        <p class="card-text">Floor: {{ room.floor }}</p>
-                        {% if user.is_superuser %}
+        <table class="room-table">
+            <thead>
+                <tr>
+                    <th>Room Number</th>
+                    <th>Available Seats</th>
+                    <th>Type</th>
+                    <th>Available Date</th>
+                    <th>Floor</th>
+                    {% if user.is_superuser %}
+                    <th>Actions</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for room in rooms %}
+                <tr>
+                    <td>{{ room.room_number }}</td>
+                    <td>{{ room.available_seat }}</td>
+                    <td>{{ room.get_type_display }}</td>
+                    <td>{{ room.available_date }}</td>
+                    <td>{{ room.floor }}</td>
+                    {% if user.is_superuser %}
+                    <td>
+                        
+                        <a href="{% url 'edit_room' room.id %}" class="btn-update">Update</a>
                         <form action="{% url 'delete_room' room.id %}" method="post" style="display: inline;">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-delete btn-small me-2">Delete</button>
+                            <button type="submit" class="btn-delete">Delete</button>
                         </form>
-                        <a href="{% url 'edit_room' room.id %}" class="btn btn-update btn-small">Update</a>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-            {% empty %}
-            <div class="col">
-                <p>No rooms found.</p>
-            </div>
-            {% endfor %}
-        </div>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="no-rooms-found">No rooms found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 </section>
 
